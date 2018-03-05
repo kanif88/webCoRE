@@ -21,7 +21,7 @@ public static String version() { return "v0.3.000.20180224" }
 /*** webCoRE DEFINITION														***/
 /******************************************************************************/
 private static String handle() { return "webCoRE" }
-include 'asynchttp_v1'
+//include 'asynchttp_v1'
 definition(
 	name: "${handle()} Dashboard",
 	namespace: "ady624",
