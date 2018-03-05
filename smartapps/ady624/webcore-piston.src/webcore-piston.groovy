@@ -284,7 +284,7 @@ public static String version() { return "v0.3.000.20180224" }
 /*** webCoRE DEFINITION														***/
 /******************************************************************************/
 private static String handle() { return "webCoRE" }
-include 'asynchttp_v1'
+//include 'asynchttp_v1'
 definition(
     name: "${handle()} Piston",
     namespace: "ady624",
@@ -770,16 +770,16 @@ try {
     }
 }
 
+/*
 //new and improved timeout recovery management
 def timeoutRecoveryHandler_webCoRE(event) {
 	timeHandler([t:now()], true)
 }
+*/
 
-/*
 def timeRecoveryHandler(event) {
 	timeHandler(event, true)
 }
-*/
 
 def executeHandler(event) {
 	handleEvents([date: event.date, device: location, name: 'execute', value: event.value, jsonData: event.jsonData])
@@ -807,8 +807,8 @@ def handleEvents(event) {
     	return;
     }
     checkVersion(rtData)
-    setTimeoutRecoveryHandler('timeoutRecoveryHandler_webCoRE')
-	//runIn(30, timeRecoveryHandler)
+    //setTimeoutRecoveryHandler('timeoutRecoveryHandler_webCoRE')
+    runIn(30, timeRecoveryHandler)
     if (rtData.semaphoreDelay) {
     	warn "Piston waited at a semaphore for ${rtData.semaphoreDelay}ms", rtData
     }
@@ -1133,7 +1133,7 @@ private processSchedules(rtData, scheduleJob = false) {
         	t = (t < 1 ? 1 : t)
         	rtData.stats.nextSchedule = next.t
         	if (rtData.logging) info "Setting up scheduled job for ${formatLocalTime(next.t)} (in ${t}s)" + (schedules.size() > 1 ? ', with ' + (schedules.size() - 1).toString() + ' more job' + (schedules.size() > 2 ? 's' : '') + ' pending' : ''), rtData
-        	runIn(t, timeHandler, [data: next])
+        	runIn(t.toInteger(), timeHandler, [data: next])
         	//runIn(t + 30, timeRecoveryHandler, [data: next])
     	} else {
 	    	rtData.stats.nextSchedule = 0
@@ -2885,9 +2885,9 @@ private long vcmd_wolRequest(rtData, device, params) {
 	def mac = params[0]
 	def secureCode = params[1]
 	mac = mac.replace(":", "").replace("-", "").replace(".", "").replace(" ", "").toLowerCase()
-	sendHubCommand(new physicalgraph.device.HubAction(
+	sendHubCommand(new hubitat.device.HubAction(
 		"wake on lan $mac",
-		physicalgraph.device.Protocol.LAN,
+		hubitat.device.Protocol.LAN,
 		null,
 		secureCode ? [secureCode: secureCode] : [:]
 	))
@@ -3150,7 +3150,7 @@ private long vcmd_lifxPulse(rtData, device, params) {
 }
 
 
-public localHttpRequestHandler(physicalgraph.device.HubResponse hubResponse) {
+public localHttpRequestHandler(hubitat.device.HubResponse hubResponse) {
 	def responseCode = ''
 	for (header in hubResponse.headers) {
     	if (header.key.startsWith('http')) {
@@ -3247,7 +3247,7 @@ private long vcmd_httpRequest(rtData, device, params) {
 				query: method == "GET" ? data : null, //thank you @destructure00
 				body: method != "GET" ? data : null //thank you @destructure00
 			]
-			sendHubCommand(new physicalgraph.device.HubAction(requestParams, null, [callback: localHttpRequestHandler]))
+			sendHubCommand(new hubitat.device.HubAction(requestParams, null, [callback: localHttpRequestHandler]))
             return 20000
 		} catch (all) {
 			error "Error executing internal web request: ", rtData, null, all
