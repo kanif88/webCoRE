@@ -1896,7 +1896,7 @@ private testLifx() {
         requestContentType: "application/json"
     ]
     if (asynchttp_v1) asynchttp_v1.get(lifxHandler, requestParams, [request: 'scenes'])
-    pause(250)
+    sleep(250)
     requestParams.path = "/v1/lights/all"
     if (asynchttp_v1) asynchttp_v1.get(lifxHandler, requestParams, [request: 'lights'])
 	return true
@@ -2005,7 +2005,7 @@ public Map getRunTimeData(semaphore = null, fetchWrappers = false) {
 	            break
 	        }
 	        waited = true
-	    	pause(250)
+	    	sleep(250)
 	    }
     }
     def storageApp = !!fetchWrappers ? getStorageApp() : null
@@ -2151,7 +2151,7 @@ def webCoREHandler(event) {
     switch (event.value) {
     	case 'poll':
         	int delay = (int) Math.round(2000 * Math.random())
-        	pause(delay)
+        	sleep(delay)
             broadcastPistonList()
        		break;
 /*    	case 'ping':
