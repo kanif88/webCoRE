@@ -602,7 +602,7 @@ def setBin(bin) {
     app.updateSetting('bin', [type: 'text', value: bin ?: ''])
     return [:]
 }
-
+/*
 Map pause() {
 	state.active = false
     def rtData = getRunTimeData()
@@ -625,7 +625,7 @@ Map pause() {
 	atomicState.active = false
     return rtData
 }
-
+*/
 Map resume() {
 	state.active = true;
 	def tempRtData = getTemporaryRunTimeData()
@@ -1652,7 +1652,7 @@ private Boolean executeTask(rtData, devices, statement, task, async) {
 	        return false
 	    } else {
 	        if (rtData.logging > 1) trace "Waiting for ${delay}ms", rtData
-	        sleep(delay)
+	        pauseExecution(delay)
 	    }
 	}
 	tracePoint(rtData, "t:${task.$}", now() - t, delay)
@@ -1743,7 +1743,7 @@ private executePhysicalCommand(rtData, device, command, params = [], delay = nul
             error "Error while executing physical command $device.$command($params):", rtData, null, all
         }
         if (rtData.piston.o?.ced) {
-            sleep(rtData.piston.o.ced)
+            pauseExecution(rtData.piston.o.ced)
             if (rtData.logging > 2) debug "Injected a ${rtData.piston.o.ced}ms delay after [$device].$command(${params ? "$params" : ''})", rtData
         }
     }
