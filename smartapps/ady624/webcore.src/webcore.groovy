@@ -284,7 +284,7 @@ public static String version() { return "v0.3.000.20180224" }
 /******************************************************************************/
 private static String handle() { return "webCoRE" }
 private static String domain() { return "webcore.co" }
-include 'asynchttp_v1'
+//include 'asynchttp_v1'
 definition(
 	name: "${handle()}",
 	namespace: "ady624",
@@ -1896,7 +1896,7 @@ private testLifx() {
         requestContentType: "application/json"
     ]
     if (asynchttp_v1) asynchttp_v1.get(lifxHandler, requestParams, [request: 'scenes'])
-    sleep(250)
+    pauseExecution(250)
     requestParams.path = "/v1/lights/all"
     if (asynchttp_v1) asynchttp_v1.get(lifxHandler, requestParams, [request: 'lights'])
 	return true
@@ -2005,7 +2005,7 @@ public Map getRunTimeData(semaphore = null, fetchWrappers = false) {
 	            break
 	        }
 	        waited = true
-	    	sleep(250)
+	    	pauseExecution(250)
 	    }
     }
     def storageApp = !!fetchWrappers ? getStorageApp() : null
@@ -2151,7 +2151,7 @@ def webCoREHandler(event) {
     switch (event.value) {
     	case 'poll':
         	int delay = (int) Math.round(2000 * Math.random())
-        	sleep(delay)
+        	pauseExecution(delay)
             broadcastPistonList()
        		break;
 /*    	case 'ping':
