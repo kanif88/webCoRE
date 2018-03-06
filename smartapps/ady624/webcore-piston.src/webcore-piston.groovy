@@ -602,7 +602,7 @@ def setBin(bin) {
     app.updateSetting('bin', [type: 'text', value: bin ?: ''])
     return [:]
 }
-/*
+
 Map pause() {
 	state.active = false
     def rtData = getRunTimeData()
@@ -625,7 +625,7 @@ Map pause() {
 	atomicState.active = false
     return rtData
 }
-*/
+
 Map resume() {
 	state.active = true;
 	def tempRtData = getTemporaryRunTimeData()
